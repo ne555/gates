@@ -14,18 +14,21 @@ class Gates
 class BothTrue /*aka And*/ : public Gates
 {
 	public:
-	BothTrue (Input a, Input b); // a binary gate, it has two inputs
+	BothTrue (InputPoint a, InputPoint b); // a binary gate, it has two inputs
 	State out () const override
 	{
-		return a->number () == State::On // number() seems to be a bad name
-		       and b->number () == State::On;
+		if (a->number () == State::On // number() seems to be a bad name
+		    and b->number () == State::On)
+			return State::On;
+		else
+			return State::Off;
 	}
 
 	private:
-	Input a, b; // it needs to store those inputs to be able to operate on them later
+	InputPoint a, b; // it needs to store those inputs to be able to operate on them later
 };
 
-BothTrue::BothTrue (Input a, Input b)
+inline BothTrue::BothTrue (InputPoint a, InputPoint b)
 : // constructor
   a (a), // initialization list
   b (b)
@@ -37,47 +40,47 @@ BothTrue::BothTrue (Input a, Input b)
 class Anyone /*aka Or*/ : public Gates
 {
 	public:
-	Anyone (Input a, Input b); // again, a binary gate
+	Anyone (InputPoint a, InputPoint b); // again, a binary gate
 	State out () const override
 	{
-		return a->number () == State::On or b->number () == State::On;
+		return make_state(a->number () == State::On or b->number () == State::On);
 	}
 
 	private:
-	Input a, b;
-}
+	InputPoint a, b;
+};
 
 // yet another one
 class Opposite /*aka Not*/ : public Gates
 {
 	public:
-	Opposite (Input a); // unary gate
+	Opposite (InputPoint a); // unary gate
 	State out () const override
 	{
-		return a->number () == State::Off;
+		return make_state(a->number () == State::Off);
 	}
 
 	private:
-	Input a;
-}
+	InputPoint a;
+};
 
 #if 0
 //one more
 class JustOne /*aka Xor*/: public Gates{
 public:
-	JustOne(Input a, Input b):
+	JustOne(InputPoint a, InputPoint b):
 	//just pseudo, you'll need std::make_shared
 		result(
-			Input(
+			InputPoint(
 				BothTrue( //~AB
-					Input(Opposite(a)),
+					InputPoint(Opposite(a)),
 					b
 				),
 			),
-			Input(
+			InputPoint(
 				BothTrue( //A~B
 					a,
-					Input(Opposite(b)
+					InputPoint(Opposite(b)
 				)
 			)
 		)
@@ -89,5 +92,6 @@ public:
 
 private:
 	Anyone result; //would implement ~AB + A~B
-}
+};
+#endif
 #endif

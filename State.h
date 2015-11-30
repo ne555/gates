@@ -1,3 +1,5 @@
+#ifndef STATE_H
+#define STATE_H
 #include <iostream>
 enum class State
 {
@@ -7,3 +9,8 @@ enum class State
 };
 
 std::ostream& operator<<(std::ostream&, State);
+inline State make_state(bool b){
+	if(b) return State::On;
+	return State::Off;
+}
+#endif

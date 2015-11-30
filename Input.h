@@ -4,6 +4,7 @@
 #include <memory>
 #include "State.h"
 
+class Gates;
 class Input
 {
 	public:
