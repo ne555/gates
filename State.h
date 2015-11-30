@@ -8,9 +8,18 @@ enum class State
 	Unknown,
 };
 
-std::ostream& operator<<(std::ostream&, State);
-inline State make_state(bool b){
-	if(b) return State::On;
+inline std::ostream& operator<<(std::ostream& out, State s)
+{
+	if (s == State::On)
+		out << "On";
+	else if (s == State::Off)
+		out << "Off";
+	else
+		out << "Unknown";
+}
+inline State make_state (bool b)
+{
+	if (b) return State::On;
 	return State::Off;
 }
 #endif

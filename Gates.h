@@ -10,6 +10,7 @@ class Gates
 	virtual State out () const = 0;
 	virtual ~Gates () = default; // needed because there is a virtual member function
 };
+typedef std::shared_ptr<Gates> GatePoint;
 
 class BothTrue /*aka And*/ : public Gates
 {
